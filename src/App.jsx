@@ -22,7 +22,24 @@ export default function App() {
   const [report, setReport] = useState(null);
   const [loading, setLoading] = useState(true);
   const [reportMode, setReportMode] = useState("token");
-  const [savedLaunchReport, setSavedLaunchReport] = useState(null);
+  const [savedLaunchReport, setSavedLaunchReport] = useState({
+  input: {
+    tge_pct: 0,
+  },
+  result: {
+    score: 0,
+    risk: "",
+    summary: "",
+    metrics: {
+      circulating_pct: 0,
+      fdv_liquidity_ratio: 0,
+      tge_pct: 0,
+      liquidity: 0,
+    },
+    warnings: [],
+    recommendations: [],
+  },
+});
 
   const params = new URLSearchParams(window.location.search);
   const reportId =
