@@ -88,6 +88,7 @@ export default function App() {
   })
     .then((res) => res.json())
     .then((analysisData) => {
+      console.log("ANALYSIS DATA:", analysisData);
       setAnalysis(analysisData);
       setLoading(false);
     })
