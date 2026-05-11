@@ -71,19 +71,21 @@ export default function App() {
 
   // 1. Load report (paid + token)
   fetch(`${API}/reports/${reportId}`)
-    .then((res) => res.json())
-    .then((data) => {
-      setReport(data);
+  .then((res) => res.json())
+  .then((data) => {
+    setReport(data);
 
-      // 2. Call analyze-token using saved token
-      return fetch(`${API}/analyze-token`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ token: data.token }),
-      });
-    })
+    return fetch(`${API}/analyze-token`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        token: data.token,
+        chain: data.chain || "solana",
+      }),
+    });
+  })
     .then((res) => res.json())
     .then((analysisData) => {
       setAnalysis(analysisData);
@@ -136,6 +138,7 @@ export default function App() {
           });
 
           const reportData = await reportRes.json();
+          console.log("REPORT RESPONSE:", reportData);
           localStorage.setItem("kryos_report_id", reportData.report_id);
 
           const checkoutRes = await fetch(`${API}/checkout`, {
@@ -148,6 +151,7 @@ export default function App() {
           });
 
           const checkoutData = await checkoutRes.json();
+          console.log("CHECKOUT RESPONSE:", checkoutData);
 
           if (checkoutData.url) {
             window.location.href = checkoutData.url;
@@ -179,204 +183,195 @@ export default function App() {
 )}
 
 
-<div
-  style={{
-    padding: isMobile ? 20 : 32,
-    borderRadius: 28,
-    background:
-      "linear-gradient(135deg, rgba(30,41,59,1) 0%, rgba(15,23,42,1) 100%)",
-    border: "1px solid rgba(255,255,255,0.08)",
-    marginBottom: 28,
-    boxShadow: "0 10px 40px rgba(0,0,0,0.35)",
-  }}
->
+{reportMode === "launch" && savedLaunchReport && (
   <div
     style={{
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center",
-      marginBottom: 24,
-      flexWrap: "wrap",
-      gap: 16,
+      padding: isMobile ? 20 : 32,
+      borderRadius: 28,
+      background:
+        "linear-gradient(135deg, rgba(30,41,59,1) 0%, rgba(15,23,42,1) 100%)",
+      border: "1px solid rgba(255,255,255,0.08)",
+      marginBottom: 28,
+      boxShadow: "0 10px 40px rgba(0,0,0,0.35)",
     }}
   >
-    <div>
-      <div
-        style={{
-          fontSize: 14,
-          letterSpacing: 1.2,
-          textTransform: "uppercase",
-          color: "#67e8f9",
-          fontWeight: 700,
-          marginBottom: 8,
-        }}
-      >
-        Kryos Risk Engine v1
-      </div>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        marginBottom: 24,
+        flexWrap: "wrap",
+        gap: 16,
+      }}
+    >
+      <div>
+        <div
+          style={{
+            fontSize: 14,
+            letterSpacing: 1.2,
+            textTransform: "uppercase",
+            color: "#67e8f9",
+            fontWeight: 700,
+            marginBottom: 8,
+          }}
+        >
+          Kryos Risk Engine v1
+        </div>
 
-      <h1
-        style={{
-          fontSize: isMobile ? 34 : 52,
-          lineHeight: 1,
-          margin: 0,
-          fontWeight: 800,
-          letterSpacing: -2,
-        }}
-      >
-        Premium Launch Risk Report
-      </h1>
+        <h1
+          style={{
+            fontSize: isMobile ? 34 : 52,
+            lineHeight: 1,
+            margin: 0,
+            fontWeight: 800,
+            letterSpacing: -2,
+          }}
+        >
+          Premium Launch Risk Report
+        </h1>
 
-      <p
-        style={{
-          color: "#94a3b8",
-          marginTop: 16,
-          fontSize: 18,
-          maxWidth: 760,
-          lineHeight: 1.7,
-        }}
-      >
-        Institutional-style tokenomics analysis focused on dilution,
-        liquidity stress, unlock pressure, and launch stability.
-      </p>
-      <button
+        <p
+          style={{
+            color: "#94a3b8",
+            marginTop: 16,
+            fontSize: 18,
+            maxWidth: 760,
+            lineHeight: 1.7,
+          }}
+        >
+          Institutional-style tokenomics analysis focused on dilution,
+          liquidity stress, unlock pressure, and launch stability.
+        </p>
+
+        <button
           onClick={() => window.print()}
           style={{
-          marginTop: 18,
-          padding: "14px 22px",
-          borderRadius: 12,
-          border: "1px solid rgba(103,232,249,0.35)",
-          background: "rgba(103,232,249,0.12)",
-          color: "#67e8f9",
-          fontWeight: 700,
-          cursor: "pointer",
-          width: isMobile ? "100%" : "auto",
-          fontSize: 16,
-       }}
+            marginTop: 18,
+            padding: "14px 22px",
+            borderRadius: 12,
+            border: "1px solid rgba(103,232,249,0.35)",
+            background: "rgba(103,232,249,0.12)",
+            color: "#67e8f9",
+            fontWeight: 700,
+            cursor: "pointer",
+            width: isMobile ? "100%" : "auto",
+            fontSize: 16,
+          }}
+        >
+          Export PDF
+        </button>
+      </div>
+
+      <div
+        style={{
+          padding: "14px 18px",
+          borderRadius: 18,
+          background:
+            savedLaunchReport.result.score >= 75
+              ? "rgba(34,197,94,0.15)"
+              : savedLaunchReport.result.score >= 50
+              ? "rgba(250,204,21,0.15)"
+              : "rgba(239,68,68,0.15)",
+        }}
       >
-       Export PDF
-     </button>
+        <div
+          style={{
+            fontSize: 14,
+            color: "#cbd5e1",
+            marginBottom: 6,
+          }}
+        >
+          Overall Risk
+        </div>
+
+        <div
+          style={{
+            fontSize: 28,
+            fontWeight: 800,
+            color:
+              savedLaunchReport.result.score >= 75
+                ? "#22c55e"
+                : savedLaunchReport.result.score >= 50
+                ? "#facc15"
+                : "#ef4444",
+          }}
+        >
+          {savedLaunchReport.result.risk}
+        </div>
+      </div>
     </div>
 
     <div
       style={{
-        padding: "14px 18px",
-        borderRadius: 18,
-        background:
-          savedLaunchReport.result.score >= 75
-            ? "rgba(34,197,94,0.15)"
-            : savedLaunchReport.result.score >= 50
-            ? "rgba(250,204,21,0.15)"
-            : "rgba(239,68,68,0.15)",
-        border:
-          savedLaunchReport.result.score >= 75
-            ? "1px solid rgba(34,197,94,0.35)"
-            : savedLaunchReport.result.score >= 50
-            ? "1px solid rgba(250,204,21,0.35)"
-            : "1px solid rgba(239,68,68,0.35)",
+        display: "grid",
+        gridTemplateColumns: isMobile
+          ? "1fr"
+          : "repeat(auto-fit, minmax(220px, 1fr))",
+        gap: 18,
+        marginTop: 30,
       }}
     >
-      <div
-        style={{
-          fontSize: 14,
-          color: "#cbd5e1",
-          marginBottom: 6,
-        }}
-      >
-        Overall Risk
+      <div style={card}>
+        <div style={{ color: "#94a3b8", marginBottom: 10 }}>
+          Launch Score
+        </div>
+
+        <div
+          style={{
+            fontSize: 64,
+            fontWeight: 800,
+            lineHeight: 1,
+          }}
+        >
+          {savedLaunchReport.result.score}
+        </div>
+
+        <div style={{ marginTop: 10, color: "#cbd5e1" }}>
+          / 100 Stability Rating
+        </div>
       </div>
 
-      <div
-        style={{
-          fontSize: 28,
-          fontWeight: 800,
-          color:
-            savedLaunchReport.result.score >= 75
-              ? "#22c55e"
-              : savedLaunchReport.result.score >= 50
-              ? "#facc15"
-              : "#ef4444",
-        }}
-      >
-        {savedLaunchReport.result.risk}
+      <div style={card}>
+        <div style={{ color: "#94a3b8", marginBottom: 10 }}>
+          TGE Unlock
+        </div>
+
+        <div
+          style={{
+            fontSize: 52,
+            fontWeight: 800,
+          }}
+        >
+          {savedLaunchReport.input.tge_pct}%
+        </div>
+
+        <div style={{ marginTop: 10, color: "#cbd5e1" }}>
+          Initial circulating unlock
+        </div>
+      </div>
+
+      <div style={card}>
+        <div style={{ color: "#94a3b8", marginBottom: 10 }}>
+          FDV / Liquidity
+        </div>
+
+        <div
+          style={{
+            fontSize: 52,
+            fontWeight: 800,
+          }}
+        >
+          {savedLaunchReport.result.metrics.fdv_liquidity_ratio}
+        </div>
+
+        <div style={{ marginTop: 10, color: "#cbd5e1" }}>
+          Liquidity stress ratio
+        </div>
       </div>
     </div>
   </div>
-
-  <div
-    style={{
-      display: "grid",
-      gridTemplateColumns: isMobile
-        ? "1fr"
-        : "repeat(auto-fit, minmax(220px, 1fr))",
-      gap: 18,
-      marginTop: 30,
-    }}
-  >
-    <div style={card}>
-      <div style={{ color: "#94a3b8", marginBottom: 10 }}>
-        Launch Score
-      </div>
-
-      <div
-        style={{
-          fontSize: 64,
-          fontWeight: 800,
-          lineHeight: 1,
-          color:
-            savedLaunchReport.result.score >= 75
-              ? "#22c55e"
-              : savedLaunchReport.result.score >= 50
-              ? "#facc15"
-              : "#ef4444",
-        }}
-      >
-        {savedLaunchReport.result.score}
-      </div>
-
-      <div style={{ marginTop: 10, color: "#cbd5e1" }}>
-        / 100 Stability Rating
-      </div>
-    </div>
-
-    <div style={card}>
-      <div style={{ color: "#94a3b8", marginBottom: 10 }}>
-        TGE Unlock
-      </div>
-
-      <div
-        style={{
-          fontSize: 52,
-          fontWeight: 800,
-        }}
-      >
-        {savedLaunchReport.input.tge_pct}%
-      </div>
-
-      <div style={{ marginTop: 10, color: "#cbd5e1" }}>
-        Initial circulating unlock
-      </div>
-    </div>
-
-    <div style={card}>
-      <div style={{ color: "#94a3b8", marginBottom: 10 }}>
-        FDV / Liquidity
-      </div>
-
-      <div
-        style={{
-          fontSize: 52,
-          fontWeight: 800,
-        }}
-      >
-        {savedLaunchReport.result.metrics.fdv_liquidity_ratio}
-      </div>
-
-      <div style={{ marginTop: 10, color: "#cbd5e1" }}>
-        Liquidity stress ratio
-      </div>
-    </div>
-  </div>
-</div>
+)}
    
 
 {reportMode === "launch" && savedLaunchReport && (
