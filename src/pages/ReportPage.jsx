@@ -17,6 +17,15 @@ export default function ReportPage() {
       try {
         const res = await fetch(`${API}/v1/reports/${id}`);
         const data = await res.json();
+        const savedChain = localStorage.getItem("kryos_chain");
+
+      if (report?.chain && savedChain && report.chain !== savedChain) {
+        localStorage.removeItem("kryos_report_id");
+        localStorage.removeItem("kryos_paid");
+
+        window.location.href = "/";
+        return;
+      }
 
         if (!data) {
           setError("Report not found.");
