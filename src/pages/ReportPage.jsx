@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-const API = "http://127.0.0.1:8010";
+const API = "https://web-production-801ec.up.railway.app";
 
 function barWidth(value) {
   return `${Math.min(value, 100)}%`;

@@ -1,13 +1,13 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://127.0.0.1:8001/kryos/v1";
-const API_KEY = "put-a-long-random-string-here";
+const API_BASE_URL = "https://web-production-801ec.up.railway.app";
+
 
 const api = axios.create({
   baseURL: API_BASE_URL,
   headers: {
     "Content-Type": "application/json",
-    "X-API-Key": API_KEY,
+    
   },
 });
 
