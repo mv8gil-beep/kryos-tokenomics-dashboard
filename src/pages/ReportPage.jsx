@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-const API = "https://web-production-801ec.up.railway.app";
+const API = import.meta.env.VITE_API_URL;
 
 function barWidth(value) {
   return `${Math.min(value, 100)}%`;
