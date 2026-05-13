@@ -22,6 +22,7 @@ export default function App() {
   const [report, setReport] = useState(null);
   const [loading, setLoading] = useState(true);
   const [reportMode, setReportMode] = useState("token");
+  const [analysisError, setAnalysisError] = useState("");
   const [savedLaunchReport, setSavedLaunchReport] = useState({
   input: {
     tge_pct: 0,
@@ -73,9 +74,11 @@ export default function App() {
   fetch(`${API}/reports/${reportId}`)
   .then((res) => res.json())
   .then((data) => {
-    setReport(data);
+   setReport(data);
 
-    return fetch(`${API}/analyze-token`, {
+console.log("REPORT DATA BEFORE ANALYSIS:", data);
+
+return fetch(`${API}/analyze-token`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -86,12 +89,21 @@ export default function App() {
       }),
     });
   })
-    .then((res) => res.json())
-    .then((analysisData) => {
-      console.log("ANALYSIS DATA:", analysisData);
-      setAnalysis(analysisData);
-      setLoading(false);
-    })
+   .then((res) => res.json())
+  .then((analysisData) => {
+  console.log("ANALYSIS DATA:", analysisData);
+
+  if (analysisData?.error) {
+    setAnalysisError("Token not found. Try another token or chain.");
+    setAnalysis(null);
+    setLoading(false);
+    return;
+  }
+
+  setAnalysisError("");
+  setAnalysis(analysisData);
+  setLoading(false);
+})
     .catch((err) => {
       console.error(err);
       setLoading(false);
@@ -119,72 +131,156 @@ export default function App() {
   if (loading) {
     return <div style={{ padding: 40 }}>Loading report...</div>;
   }
+  if (analysisError) {
+  return (
+    <div style={{ padding: 40, color: "white" }}>
+      <h1>Token not found</h1>
+
+      <p>{analysisError}</p>
+
+      <a href="/" style={{ color: "#38bdf8" }}>
+        Try another token
+      </a>
+    </div>
+  );
+}
   
-  if (new URLSearchParams(window.location.search).get("mode") !== "launch" && (!report || !report.paid)) {
-    return (
-    <div style={{ padding: 40 }}>
-      <h1>Unlock Kryos Full Report</h1>
-      <p>This report is not unlocked yet.</p>
+  if (
+  new URLSearchParams(window.location.search).get("mode") !== "launch" &&
+  (!report || !report.paid)
+) {
+  return (
+    <div style={{ padding: 40, color: "white" }}>
+      <h1>Free Token Preview</h1>
+
+<p style={{ color: "#cbd5e1", marginBottom: 28 }}>
+  Analyze token launch risk before unlocking the full premium report.
+</p>
+
+<div
+  style={{
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+    gap: 20,
+    marginTop: 24,
+    marginBottom: 30,
+  }}
+>
+  <div style={card}>
+    <h3>Risk Score</h3>
+    <div style={{ fontSize: 48, fontWeight: 800 }}>
+      {analysis?.score || "--"}
+    </div>
+  </div>
+
+  <div style={card}>
+    <h3>Risk Level</h3>
+    <div style={{ fontSize: 36, fontWeight: 800 }}>
+      {analysis?.risk || "--"}
+    </div>
+  </div>
+
+  <div style={card}>
+    <h3>Liquidity</h3>
+    <div style={{ fontSize: 32, fontWeight: 800 }}>
+      {formatMoney(analysis?.liquidity)}
+    </div>
+  </div>
+
+  <div style={card}>
+    <h3>24H Volume</h3>
+    <div style={{ fontSize: 32, fontWeight: 800 }}>
+      {formatMoney(analysis?.volume_24h)}
+    </div>
+  </div>
+</div>
+
+<p style={{ color: "#94a3b8", marginBottom: 20 }}>
+  Unlock the full report for:
+</p>
 
       <button
+        style={{
+          background: "#22c55e",
+          color: "white",
+          border: "none",
+          padding: "14px 22px",
+          borderRadius: 14,
+          fontWeight: 700,
+          fontSize: 18,
+          cursor: "pointer",
+          marginTop: 16,
+        }}
         onClick={async () => {
           const reportRes = await fetch(`${API}/reports/create`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-            email: "",
-            token: localStorage.getItem("kryos_token") || "",
-            chain: localStorage.getItem("kryos_chain") || "solana",
-          }),
+              email: "",
+              token: localStorage.getItem("kryos_token") || "",
+              chain: localStorage.getItem("kryos_chain") || "solana",
+            }),
           });
 
           const reportData = await reportRes.json();
-          console.log("REPORT RESPONSE:", reportData);
           localStorage.setItem("kryos_report_id", reportData.report_id);
 
           const checkoutRes = await fetch(`${API}/checkout`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-            report_id: reportData.report_id,
-            mode: reportMode,
-          }),
+              report_id: reportData.report_id,
+              mode: reportMode,
+            }),
           });
 
-          const checkoutData = await checkoutRes.json();
-          console.log("CHECKOUT RESPONSE:", checkoutData);
+          const checkoutData = await checkoutRes.json();c
 
           if (checkoutData.url) {
             window.location.href = checkoutData.url;
           }
         }}
       >
-        Continue to Checkout – $29
+        Continue to Checkout — $29
       </button>
     </div>
   );
 }
-
+      
+  
+ if (
+  new URLSearchParams(window.location.search).get("mode") === "launch" &&
+  !savedLaunchReport
+) {
   return (
-  <>
-  {new URLSearchParams(window.location.search).get("mode") === "launch" && !savedLaunchReport && (
-  <div
-    style={{
-      minHeight: "100vh",
-      background: "#111827",
-      color: "white",
-      padding: 40,
-      fontFamily: "Inter, system-ui, Arial, sans-serif",
-    }}
-  >
-    <a href="/" style={{ color: "#93c5fd" }}>← Back to Home</a>
-    <h1>No saved launch report found</h1>
-    <p>Please go back, run the New Launch Analyzer first, then open the full report.</p>
-  </div>
-)}
+    <div
+      style={{
+        minHeight: "100vh",
+        background: "#111827",
+        color: "white",
+        padding: 40,
+        fontFamily: "Inter, system-ui, Arial, sans-serif",
+      }}
+    >
+      <a href="/" style={{ color: "#93c5fd" }}>
+        ← Back to Home
+      </a>
+
+      <h1>No saved launch report found</h1>
+
+      <p>
+        Please go back, run the New Launch Analyzer first,
+        then open the full report.
+      </p>
+    </div>
+  );
+}
+
+return (
 
 
-{reportMode === "launch" && savedLaunchReport && (
+<>
+  {reportMode === "launch" && savedLaunchReport && (
   <div
     style={{
       padding: isMobile ? 20 : 32,
@@ -872,11 +968,10 @@ export default function App() {
           This token launch has a moderate risk profile. The strongest concern is future dilution and early unlock pressure.
           The launch is not automatically dangerous, but investors should monitor unlock timing, circulating supply changes,
           and FDV compared to real market demand.
-        </p>
-      </div>
+             </p>
+       </div>
     </div>
-  )}
-
-    </>
-  );
-}
+)}
+</>
+);
+} 

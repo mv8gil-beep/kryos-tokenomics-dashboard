@@ -7,6 +7,8 @@ export default function Landing() {
   const [mode, setMode] = useState("lookup");
   const [launchResult, setLaunchResult] = useState(null);
   const [launchLoading, setLaunchLoading] = useState(false);
+  const API = import.meta.env.VITE_API_URL;
+  const isMobile = window.innerWidth < 768;
 
   const [launchForm, setLaunchForm] = useState({
     total_supply: "",
@@ -36,14 +38,16 @@ export default function Landing() {
   };
 
   const wrap = {
-    maxWidth: 1200,
-    margin: "0 auto",
-    padding: "24px",
-  };
+  maxWidth: 1200,
+  margin: "0 auto",
+  padding: isMobile ? "16px" : "24px",
+  width: "100%",
+  overflowX: "hidden",
+};
 
   const hero = {
     display: "grid",
-    gridTemplateColumns: "1.1fr 0.9fr",
+    gridTemplateColumns: isMobile ? "1fr" : "1.1fr 0.9fr",
     gap: 32,
     alignItems: "center",
     padding: "48px 0 64px",
@@ -71,7 +75,7 @@ export default function Landing() {
     borderRadius: 16,
     textDecoration: "none",
     fontWeight: 600,
-    marginRight: 12,
+    marginRight: isMobile ? 0 : 12,
   };
 
   const buttonSecondary = {
@@ -212,7 +216,7 @@ export default function Landing() {
                 Current mode: {mode}
               </div>
 
-              <h1 style={{ fontSize: 58, lineHeight: 1.05, margin: "18px 0 20px" }}>
+              <h1 style={{ fontSize: isMobile ? 38 : 58, lineHeight: 1.05, margin: "18px 0 20px" }}>
                 Analyze token launch risk before you buy.
               </h1>
 
@@ -230,9 +234,7 @@ export default function Landing() {
                   }
                   style={buttonPrimary}
                 >
-                  {isPaid
-                    ? "View Full Report"
-                    : "Unlock Full Risk Analysis – $29"}
+                  Analyze Token 
                 </a>
               </div>
 
@@ -244,7 +246,7 @@ export default function Landing() {
                     style={{
                       padding: "12px 16px",
                       borderRadius: 10,
-                      marginRight: 10,
+                      marginRight: isMobile ? 0 : 10,
                     }} 
 
                   >
@@ -265,10 +267,57 @@ export default function Landing() {
                       border: "1px solid #334155",
                       background: "#1f2937",
                       color: "white",
-                      width: 360,
-                      marginRight: 10,
+                      width: isMobile ? "100%" : 360,
+                      marginRight: isMobile ? 0 : 10,
                     }}
                   />
+                  <div style={{ marginTop: 12, marginBottom: 16 }}>
+  <p
+    style={{
+      color: "#94a3b8",
+      marginBottom: 8,
+      fontSize: 14,
+    }}
+  >
+    Try example tokens:
+  </p>
+
+  <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+    <button
+      onClick={() => {
+        setToken("0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48");
+        setChain("ethereum");
+      }}
+      style={{
+        padding: "8px 14px",
+        borderRadius: 999,
+        border: "1px solid #334155",
+        background: "#0f172a",
+        color: "white",
+        cursor: "pointer",
+      }}
+    >
+      USDC
+    </button>
+
+    <button
+      onClick={() => {
+        setToken("0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2");
+        setChain("ethereum");
+      }}
+      style={{
+        padding: "8px 14px",
+        borderRadius: 999,
+        border: "1px solid #334155",
+        background: "#0f172a",
+        color: "white",
+        cursor: "pointer",
+      }}
+    >
+      WETH
+    </button>
+  </div>
+</div>
 
                   <div style={{ marginTop: 12, marginBottom: 12 }}>
                   <p style={{ opacity: 0.7, marginBottom: 8 }}>
@@ -294,11 +343,29 @@ export default function Landing() {
                   </div>
 
                   <button
-                    onClick={() => {
+                    onClick={async () => {
                       localStorage.setItem("kryos_token", token);
                       localStorage.setItem("kryos_chain", chain);
-                      window.location.href = "/app";
-                    }}
+
+                      localStorage.removeItem("kryos_report_id");
+                      localStorage.removeItem("kryos_paid");
+
+                      const reportRes = await fetch(`${API}/reports/create`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                          email: "",
+                          token,
+                          chain,
+                        }),
+                      });
+
+  const reportData = await reportRes.json();
+
+  localStorage.setItem("kryos_report_id", reportData.report_id);
+
+  window.location.href = `/app?report_id=${reportData.report_id}`;
+}}
                     style={{
                       padding: "12px 18px",
                       borderRadius: 10,
@@ -331,9 +398,9 @@ export default function Landing() {
                   <div
                     style={{
                       display: "grid",
-                      gridTemplateColumns: "1fr 1fr",
+                      gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
                       gap: 12,
-                      maxWidth: 720,
+                      maxWidth: isMobile ? "100%" : 720,
                     }}
                   >
                     {[
@@ -442,7 +509,7 @@ export default function Landing() {
                 </div>
               )}
 
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14, maxWidth: 560, marginTop: 30 }}>
+              <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(3, 1fr)", gap: 14, maxWidth: 560, marginTop: 30 }}>
                 <div style={smallCard}>
                   <div style={{ fontSize: 30, fontWeight: 700 }}>70</div>
                   <div style={{ ...muted, marginTop: 6 }}>Example launch score</div>
@@ -480,7 +547,7 @@ export default function Landing() {
                   </div>
                 </div>
 
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginTop: 20 }}>
+                <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 12, marginTop: 20 }}>
                   <div style={smallCard}>
                     <div style={muted}>Launch Score</div>
                     <div style={{ fontSize: 34, fontWeight: 700, marginTop: 8 }}>70 / 100</div>
@@ -512,23 +579,23 @@ export default function Landing() {
 
           <section id="features" style={{ padding: "24px 0 20px" }}>
             <h2 style={{ fontSize: 40, marginBottom: 10 }}>Built for investors making fast decisions.</h2>
-            <p style={{ ...muted, fontSize: 18, maxWidth: 720 }}>
+            <p style={{ ...muted, fontSize: 18,maxWidth: isMobile ? "100%" : 720 }}>
               Kryos focuses on one question: is this token launch investable or dangerous?
             </p>
 
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 18, marginTop: 28 }}>
+            <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(3, 1fr)", gap: 18, marginTop: 28 }}>
               {sections.map((section) => (
                 <div key={section.title} style={card}>
                   <div style={{ fontSize: 22, fontWeight: 700 }}>{section.title}</div>
                   <div style={{ ...muted, marginTop: 12, lineHeight: 1.7 }}>{section.text}</div>
                 </div>
               ))}
-            </div>
+            </div>f
           </section>
 
           <section id="sample" style={{ padding: "28px 0" }}>
             <div style={card}>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 28 }}>
+              <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 28 }}>
                 <div>
                   <h2 style={{ fontSize: 40, marginBottom: 10 }}>Sample output</h2>
                   <p style={{ ...muted, fontSize: 18, lineHeight: 1.7 }}>
@@ -576,7 +643,7 @@ export default function Landing() {
             <div style={{ maxWidth: 900 }}>
               <h2 style={{ fontSize: 36, marginBottom: 20 }}>Simple pricing</h2>
 
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
+              <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 20 }}>
                 <div
                   style={{
                     padding: 24,
