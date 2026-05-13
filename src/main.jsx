@@ -25,6 +25,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
        <Route path="/token-unlock-schedule" element={<UnlockPage />} />
        <Route path="/thank-you" element={<ThankYou />} />
        <Route path="/reports/example-token" element={<ExampleReportPage />} />
+
+       <Route path="*" element={<Landing />} />
+       
      </Routes>
     </BrowserRouter>
   </React.StrictMode>

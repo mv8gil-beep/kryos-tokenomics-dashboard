@@ -270,6 +270,29 @@ export default function Landing() {
                     }}
                   />
 
+                  <div style={{ marginTop: 12, marginBottom: 12 }}>
+                  <p style={{ opacity: 0.7, marginBottom: 8 }}>
+                       Try example tokens:
+                  </p>
+
+                   <button
+                    onClick={() => {
+                     setToken("0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48");
+                    setChain("ethereum");
+                    }}
+                     style={{
+                     padding: "8px 12px",
+                     borderRadius: 999,
+                     border: "1px solid #334155",
+                     background: "#111827",
+                     color: "white",
+                     cursor: "pointer",
+                    }}
+                  >
+                    USDC (Ethereum)
+                    </button>
+                  </div>
+
                   <button
                     onClick={() => {
                       localStorage.setItem("kryos_token", token);

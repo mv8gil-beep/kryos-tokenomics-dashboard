@@ -11,46 +11,69 @@ export default function ReportPage() {
   const { id } = useParams();
   const [report, setReport] = useState(undefined);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function loadReport() {
+      
       try {
-        const res = await fetch(`${API}/v1/reports/${id}`);
-        const data = await res.json();
-        const savedChain = localStorage.getItem("kryos_chain");
+  setLoading(true);
+  setError("");
 
-      if (report?.chain && savedChain && report.chain !== savedChain) {
-        localStorage.removeItem("kryos_report_id");
-        localStorage.removeItem("kryos_paid");
+  const res = await fetch(`${API}/v1/reports/${id}`);
+  const data = await res.json();
 
-        window.location.href = "/";
+  if (!data || data.error || !data.project || !data.analysis) {
+    setError("Report not found.");
+    setReport(null);
+    setLoading(false);
+    return;
+  }
+
+  const savedChain = localStorage.getItem("kryos_chain");
+
+  if (data?.project?.chain && savedChain && data.project.chain !== savedChain) {
+    localStorage.removeItem("kryos_report_id");
+    localStorage.removeItem("kryos_paid");
+
+    window.location.href = "/";
+    return;
+  }
+
+       if (!data || data.error || !data.project || !data.analysis) {
+        setError("Report not found.");
+        setReport(null);
+        setLoading(false);
         return;
       }
 
-        if (!data) {
-          setError("Report not found.");
-          setReport(null);
-          return;
-        }
-
         setReport(data);
+        setLoading(false); 
       } catch (err) {
         setError("Could not load report.");
         setReport(null);
+        setLoading(false);
       }
     }
 
     loadReport();
   }, [id]);
 
-  if (report === undefined) {
-    return <div style={{ padding: 24, color: "white" }}>Loading report...</div>;
-  }
+  if (loading) {
+  return (
+    <div style={{ padding: 24, color: "white" }}>
+      Loading report...
+    </div>
+  );
+}
 
-  if (error) {
-    return <div style={{ padding: 24, color: "white" }}>{error}</div>;
-  }
-
+if (error || !report) {
+  return (
+    <div style={{ padding: 24, color: "white" }}>
+      {error || "Report not found."}
+    </div>
+  );
+}
   const signals = report.analysis?.signals ?? {};
 
   const signalRows = [
@@ -79,14 +102,15 @@ export default function ReportPage() {
         }}
       >
         <h2 style={{ marginTop: 0 }}>
-          {report.project.name} ({report.project.symbol})
+          {report?.project?.name ?? "Unknown"} (
+          {report?.project?.symbol ?? "N/A"})
         </h2>
 
-        <p>Chain: {report.project.chain}</p>
-        <p>Total Supply: {report.project.total_supply}</p>
-        <p>FDV: {report.project.fdv}</p>
-        <p>Circulating Supply: {report.project.circulating_supply}</p>
-        <p>TGE Unlock: {report.project.tge_unlock}%</p>
+        <p>Chain: {report?.project?.chain ?? "N/A"}</p>
+        <p>Total Supply: {report?.project?.total_supply ?? "N/A"}</p>
+        <p>FDV: {report?.project?.fdv ?? "N/A"}</p>
+        <p>Circulating Supply: {report?.project?.circulating_supply ?? "N/A"}</p>
+        <p>TGE Unlock: {report?.project?.tge_unlock ?? "N/A"}%</p>
 
         <h2 style={{ marginTop: 24 }}>Launch Score</h2>
         <p>Score: {report.analysis?.launch_score ?? "N/A"}/100</p>
