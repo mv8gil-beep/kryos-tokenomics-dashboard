@@ -31,11 +31,14 @@ export default function Landing() {
   }, []);
 
   const page = {
-    minHeight: "100vh",
-    background: "#111827",
-    color: "white",
-    fontFamily: "Inter, system-ui, Arial, sans-serif",
-  };
+  minHeight: "100vh",
+  background: "#111827",
+  color: "white",
+  fontFamily: "Inter, system-ui, Arial, sans-serif",
+  overflowX: "hidden",
+  width: "100%",
+  maxWidth: "100vw",
+};
 
   const wrap = {
   maxWidth: 1200,
@@ -220,7 +223,15 @@ export default function Landing() {
                 Analyze token launch risk before you buy.
               </h1>
 
-              <p style={{ ...muted, fontSize: 20, lineHeight: 1.6, maxWidth: 680 }}>
+              <p
+                  style={{
+                  ...muted,
+                  fontSize: isMobile ? 18 : 20,
+                  lineHeight: 1.6,
+                  maxWidth: isMobile ? "100%" : 680,
+                  width: "100%",
+                }}
+              >
                 Kryos helps crypto investors quantify launch risk using structured tokenomics
                 signals, unlock pressure modeling, and transparent scoring.
               </p>
@@ -239,14 +250,16 @@ export default function Landing() {
               </div>
 
               {mode === "lookup" && (
-                <div style={{ marginTop: 20 }}>
+                <div style={{ marginTop: 20, width: "100%" }}>
                   <select
                     value={chain}
                     onChange={(e) => setChain(e.target.value)}
                     style={{
-                      padding: "12px 16px",
-                      borderRadius: 10,
-                      marginRight: isMobile ? 0 : 10,
+                    padding: "12px 16px",
+                    borderRadius: 10,
+                    marginRight: isMobile ? 0 : 10,
+                    width: isMobile ? "100%" : "auto",
+                    marginBottom: isMobile ? 10 : 0,
                     }} 
 
                   >
@@ -282,7 +295,15 @@ export default function Landing() {
     Try example tokens:
   </p>
 
-  <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+  <div
+  style={{
+    display: "flex",
+    gap: 10,
+    flexWrap: "wrap",
+    width: "100%",
+    marginTop: 10,
+  }}
+>
     <button
       onClick={() => {
         setToken("0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48");
@@ -319,28 +340,7 @@ export default function Landing() {
   </div>
 </div>
 
-                  <div style={{ marginTop: 12, marginBottom: 12 }}>
-                  <p style={{ opacity: 0.7, marginBottom: 8 }}>
-                       Try example tokens:
-                  </p>
-
-                   <button
-                    onClick={() => {
-                     setToken("0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48");
-                    setChain("ethereum");
-                    }}
-                     style={{
-                     padding: "8px 12px",
-                     borderRadius: 999,
-                     border: "1px solid #334155",
-                     background: "#111827",
-                     color: "white",
-                     cursor: "pointer",
-                    }}
-                  >
-                    USDC (Ethereum)
-                    </button>
-                  </div>
+                 
 
                   <button
                     onClick={async () => {
@@ -509,7 +509,16 @@ export default function Landing() {
                 </div>
               )}
 
-              <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(3, 1fr)", gap: 14, maxWidth: 560, marginTop: 30 }}>
+             <div
+                     style={{
+                     display: "grid",
+                     gridTemplateColumns: isMobile ? "1fr" : "repeat(3, 1fr)",
+                     gap: 14,
+                     maxWidth: isMobile ? "100%" : 560,
+                     marginTop: 30,
+                     width: "100%",
+                     }}
+             >
                 <div style={smallCard}>
                   <div style={{ fontSize: 30, fontWeight: 700 }}>70</div>
                   <div style={{ ...muted, marginTop: 6 }}>Example launch score</div>
@@ -527,7 +536,15 @@ export default function Landing() {
 
             <div style={card}>
               <div style={{ ...smallCard, background: "rgba(17,24,39,0.7)" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "start" }}>
+                <div
+  style={{
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "start",
+    flexWrap: "wrap",
+    gap: 12,
+  }}
+>
                   <div>
                     <div style={{ fontSize: 24, fontWeight: 700 }}>Kryos (KRY)</div>
                     <div style={{ ...muted, fontSize: 14, marginTop: 4 }}>Ethereum · Public launch report</div>
@@ -609,7 +626,15 @@ export default function Landing() {
                   </ul>
                 </div>
 
-                <div style={{ ...smallCard, background: "rgba(17,24,39,0.72)" }}>
+                <div
+                    style={{
+                    ...smallCard,
+                    background: "rgba(17,24,39,0.72)",
+                    width: "100%",
+                    maxWidth: "100%",
+                    overflowX: "hidden",
+                  }}
+                >
                   <div style={{ ...muted, marginBottom: 16 }}>Unlock Pressure</div>
                   {[
                     ["M1", 65],
@@ -618,7 +643,14 @@ export default function Landing() {
                     ["M12", 22],
                   ].map(([month, width]) => (
                     <div key={month} style={{ marginBottom: 16 }}>
-                      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
+                      <div
+                     style={{
+                     display: "flex",
+                     justifyContent: "space-between",
+                     marginBottom: 6,
+                     gap: 8,
+                     }}
+                      >
                         <span>{month}</span>
                         <span>{width}</span>
                       </div>
