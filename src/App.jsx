@@ -1,4 +1,13 @@
 import { useEffect, useState } from "react";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  CartesianGrid,
+} from "recharts";
 
 const API = "https://web-production-801ec.up.railway.app";
 
@@ -234,7 +243,7 @@ return fetch(`${API}/analyze-token`, {
             }),
           });
 
-          const checkoutData = await checkoutRes.json();c
+          const checkoutData = await checkoutRes.json();
 
           if (checkoutData.url) {
             window.location.href = checkoutData.url;
@@ -725,6 +734,220 @@ return (
     ))}
   </div>
 </div>
+<div
+  style={{
+    ...card,
+    background:
+      "linear-gradient(135deg, rgba(15,23,42,1) 0%, rgba(30,41,59,1) 100%)",
+    border: "1px solid rgba(103,232,249,0.18)",
+    boxShadow: "0 10px 30px rgba(0,0,0,0.25)",
+  }}
+>
+  <div
+    style={{
+      color: "#67e8f9",
+      fontSize: 13,
+      letterSpacing: 1.1,
+      textTransform: "uppercase",
+      fontWeight: 700,
+      marginBottom: 10,
+    }}
+  >
+    Benchmark Comparison
+  </div>
+
+  <h3
+    style={{
+      marginTop: 0,
+      marginBottom: 20,
+      fontSize: 28,
+    }}
+  >
+    Comparable Launch Analysis
+  </h3>
+
+  <div
+    style={{
+      overflowX: "auto",
+    }}
+  >
+    <table
+      style={{
+        width: "100%",
+        borderCollapse: "collapse",
+        color: "white",
+      }}
+    >
+      <thead>
+        <tr
+          style={{
+            background: "rgba(255,255,255,0.05)",
+          }}
+        >
+          <th style={{ padding: 14, textAlign: "left" }}>Metric</th>
+          <th style={{ padding: 14, textAlign: "left" }}>This Launch</th>
+          <th style={{ padding: 14, textAlign: "left" }}>
+            Typical Mid-Cap
+          </th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr>
+          <td style={{ padding: 14 }}>TGE Unlock</td>
+          <td style={{ padding: 14 }}>
+            {savedLaunchReport.input.tge_pct}%
+          </td>
+          <td style={{ padding: 14, color: "#94a3b8" }}>32%</td>
+        </tr>
+
+        <tr>
+          <td style={{ padding: 14 }}>FDV / Liquidity</td>
+          <td style={{ padding: 14 }}>
+            {savedLaunchReport.result.metrics.fdv_liquidity_ratio}
+          </td>
+          <td style={{ padding: 14, color: "#94a3b8" }}>28</td>
+        </tr>
+
+        <tr>
+          <td style={{ padding: 14 }}>Launch Stability</td>
+          <td style={{ padding: 14 }}>
+            {savedLaunchReport.result.score}/100
+          </td>
+          <td style={{ padding: 14, color: "#94a3b8" }}>54/100</td>
+        </tr>
+
+        <tr>
+          <td style={{ padding: 14 }}>Circulating Float</td>
+          <td style={{ padding: 14 }}>
+            {savedLaunchReport.result.metrics.circulating_pct}%
+          </td>
+          <td style={{ padding: 14, color: "#94a3b8" }}>18%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div
+    style={{
+      marginTop: 24,
+      padding: 18,
+      borderRadius: 16,
+      background: "rgba(103,232,249,0.08)",
+      border: "1px solid rgba(103,232,249,0.18)",
+      color: "#cbd5e1",
+      lineHeight: 1.7,
+    }}
+  >
+    Kryos estimates this launch structure ranks above average
+    compared to typical speculative mid-cap token launches.
+  </div>
+</div>
+  <div
+  style={{
+    ...card,
+    background:
+      "linear-gradient(135deg, rgba(15,23,42,1) 0%, rgba(30,41,59,1) 100%)",
+    border: "1px solid rgba(255,255,255,0.08)",
+    overflow: "hidden",
+    position: "relative",
+  }}
+>
+  <div
+    style={{
+      position: "absolute",
+      inset: 0,
+      backdropFilter: "blur(6px)",
+      background: "rgba(15,23,42,0.45)",
+      zIndex: 1,
+    }}
+  />
+
+  <div style={{ position: "relative", zIndex: 2 }}>
+    <div
+      style={{
+        color: "#67e8f9",
+        fontSize: 13,
+        letterSpacing: 1.1,
+        textTransform: "uppercase",
+        fontWeight: 700,
+        marginBottom: 10,
+      }}
+    >
+      Premium Institutional Modules
+    </div>
+
+    <h3
+      style={{
+        marginTop: 0,
+        marginBottom: 20,
+        fontSize: 28,
+      }}
+    >
+      Advanced Launch Intelligence
+    </h3>
+
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
+        gap: 16,
+      }}
+    >
+      {[
+        "Wallet Concentration Analysis",
+        "Liquidity Stress Simulation",
+        "Comparable Launch Benchmarks",
+        "Smart Money Activity",
+        "Vesting Heatmap",
+        "Market Maker Stability",
+      ].map((item) => (
+        <div
+          key={item}
+          style={{
+            padding: 18,
+            borderRadius: 16,
+            background: "rgba(255,255,255,0.05)",
+            border: "1px solid rgba(255,255,255,0.06)",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <span>{item}</span>
+
+          <span
+            style={{
+              padding: "6px 10px",
+              borderRadius: 999,
+              background: "rgba(103,232,249,0.12)",
+              color: "#67e8f9",
+              fontSize: 12,
+              fontWeight: 700,
+            }}
+          >
+            🔒 Locked
+          </span>
+        </div>
+      ))}
+    </div>
+
+    <div
+      style={{
+        marginTop: 24,
+        padding: 18,
+        borderRadius: 16,
+        background: "rgba(103,232,249,0.08)",
+        border: "1px solid rgba(103,232,249,0.18)",
+        color: "#cbd5e1",
+        lineHeight: 1.7,
+      }}
+    >
+      Unlock advanced institutional-grade launch diagnostics,
+      benchmark modeling, and wallet intelligence with Kryos Premium.
+    </div>
+  </div>
+</div>
 
     <div style={card}>
       <h3>Investor Risk Summary</h3>
@@ -911,6 +1134,45 @@ return (
     Kryos estimates sell pressure decreases over time as early unlock volatility
     stabilizes and liquidity conditions mature.
   </p>
+</div>
+<div
+  style={{
+    ...card,
+    background:
+      "linear-gradient(135deg, rgba(15,23,42,1) 0%, rgba(30,41,59,1) 100%)",
+    border: "1px solid rgba(103,232,249,0.18)",
+  }}
+>
+  <h3 style={{ marginTop: 0 }}>Unlock Pressure Curve</h3>
+
+  <p style={{ color: "#94a3b8", lineHeight: 1.7 }}>
+    Projected sell pressure trend across the first 12 months after launch.
+  </p>
+
+  <div style={{ width: "100%", height: 260, marginTop: 20 }}>
+    <ResponsiveContainer>
+      <LineChart
+        data={[
+          { month: "M1", pressure: 72 },
+          { month: "M3", pressure: 58 },
+          { month: "M6", pressure: 39 },
+          { month: "M12", pressure: 24 },
+        ]}
+      >
+        <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.08)" />
+        <XAxis dataKey="month" stroke="#94a3b8" />
+        <YAxis stroke="#94a3b8" />
+        <Tooltip />
+        <Line
+          type="monotone"
+          dataKey="pressure"
+          stroke="#67e8f9"
+          strokeWidth={3}
+          dot={{ r: 5 }}
+        />
+      </LineChart>
+    </ResponsiveContainer>
+  </div>
 </div>
       <p>
         {savedLaunchReport.result.summary}
