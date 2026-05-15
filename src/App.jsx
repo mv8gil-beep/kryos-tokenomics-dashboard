@@ -359,6 +359,76 @@ return (
           Export PDF
         </button>
       </div>
+      <div
+  style={{
+    minWidth: isMobile ? "100%" : 240,
+    padding: 24,
+    borderRadius: 24,
+    background: "rgba(255,255,255,0.05)",
+    border: "1px solid rgba(255,255,255,0.08)",
+    textAlign: "center",
+  }}
+>
+  <div
+    style={{
+      fontSize: 14,
+      textTransform: "uppercase",
+      letterSpacing: 1,
+      color: "#94a3b8",
+      marginBottom: 10,
+    }}
+  >
+    Launch Score
+  </div>
+
+  <div
+    style={{
+      fontSize: 64,
+      fontWeight: 800,
+      lineHeight: 1,
+      color:
+        savedLaunchReport.result.score >= 75
+          ? "#22c55e"
+          : savedLaunchReport.result.score >= 50
+          ? "#facc15"
+          : "#ef4444",
+    }}
+  >
+    {savedLaunchReport.result.score}
+  </div>
+
+  <div
+    style={{
+      marginTop: 12,
+      fontSize: 18,
+      fontWeight: 700,
+      color:
+        savedLaunchReport.result.score >= 75
+          ? "#22c55e"
+          : savedLaunchReport.result.score >= 50
+          ? "#facc15"
+          : "#ef4444",
+    }}
+  >
+    {savedLaunchReport.result.score >= 75
+      ? "Low Risk"
+      : savedLaunchReport.result.score >= 50
+      ? "Moderate Risk"
+      : "High Risk"}
+  </div>
+
+  <div
+    style={{
+      marginTop: 16,
+      fontSize: 13,
+      color: "#94a3b8",
+      lineHeight: 1.6,
+    }}
+  >
+    Generated from liquidity depth, dilution pressure,
+    unlock schedules, and launch stability signals.
+  </div>
+</div>
 
       <div
         style={{
@@ -409,9 +479,17 @@ return (
         marginTop: 30,
       }}
     >
-      <div style={card}>
+      <div
+  style={{
+    ...card,
+    background: "rgba(15,23,42,0.85)",
+    border: "1px solid rgba(103,232,249,0.12)",
+    boxShadow: "0 8px 24px rgba(0,0,0,0.22)",
+  }}
+>
+      
         <div style={{ color: "#94a3b8", marginBottom: 10 }}>
-          Launch Score
+              Launch Score
         </div>
 
         <div
@@ -429,15 +507,23 @@ return (
         </div>
       </div>
 
-      <div style={card}>
+      <div
+    style={{
+    ...card,
+    background: "rgba(15,23,42,0.85)",
+    border: "1px solid rgba(103,232,249,0.12)",
+    boxShadow: "0 8px 24px rgba(0,0,0,0.22)",
+  }}
+>
         <div style={{ color: "#94a3b8", marginBottom: 10 }}>
           TGE Unlock
         </div>
 
         <div
           style={{
-            fontSize: 52,
+            fontSize: isMobile ? 42 : 52,
             fontWeight: 800,
+            letterSpacing: -1,
           }}
         >
           {savedLaunchReport.input.tge_pct}%
@@ -448,15 +534,23 @@ return (
         </div>
       </div>
 
-      <div style={card}>
+      <div
+            style={{
+            ...card,
+            background: "rgba(15,23,42,0.85)",
+            border: "1px solid rgba(103,232,249,0.12)",
+            boxShadow: "0 8px 24px rgba(0,0,0,0.22)",
+          }}
+      >
         <div style={{ color: "#94a3b8", marginBottom: 10 }}>
           FDV / Liquidity
         </div>
 
         <div
           style={{
-            fontSize: 52,
+            fontSize: isMobile ? 42 : 52,
             fontWeight: 800,
+            letterSpacing: -1,
           }}
         >
           {savedLaunchReport.result.metrics.fdv_liquidity_ratio}
@@ -594,6 +688,43 @@ return (
         Stability score: {savedLaunchReport.result.score} / 100.
       </p>
     </div>
+    <div
+  style={{
+    ...card,
+    background:
+      "linear-gradient(135deg, rgba(15,23,42,1) 0%, rgba(30,41,59,1) 100%)",
+    border: "1px solid rgba(103,232,249,0.18)",
+    boxShadow: "0 10px 30px rgba(0,0,0,0.25)",
+  }}
+>
+  <h3 style={{ marginTop: 0 }}>Signal Breakdown</h3>
+
+  <div style={{ display: "grid", gap: 12 }}>
+    {[
+      ["Dilution Risk", `${savedLaunchReport.result.metrics.circulating_pct}% circulating`, savedLaunchReport.result.metrics.circulating_pct < 20 ? "Moderate / High" : "Healthy"],
+      ["Liquidity Stress", `${savedLaunchReport.result.metrics.fdv_liquidity_ratio} FDV/Liquidity`, savedLaunchReport.result.metrics.fdv_liquidity_ratio > 20 ? "Elevated" : "Controlled"],
+      ["TGE Unlock", `${savedLaunchReport.input.tge_pct}% at launch`, savedLaunchReport.input.tge_pct > 30 ? "Aggressive" : "Manageable"],
+      ["Launch Stability", `${savedLaunchReport.result.score}/100 score`, savedLaunchReport.result.score >= 75 ? "Strong" : savedLaunchReport.result.score >= 50 ? "Moderate" : "Weak"],
+    ].map(([signal, value, status]) => (
+      <div
+        key={signal}
+        style={{
+          display: "grid",
+          gridTemplateColumns: isMobile ? "1fr" : "1.2fr 1fr 1fr",
+          gap: 12,
+          padding: 14,
+          borderRadius: 14,
+          background: "rgba(255,255,255,0.04)",
+          border: "1px solid rgba(255,255,255,0.06)",
+        }}
+      >
+        <strong>{signal}</strong>
+        <span style={{ color: "#cbd5e1" }}>{value}</span>
+        <span style={{ color: "#67e8f9", fontWeight: 700 }}>{status}</span>
+      </div>
+    ))}
+  </div>
+</div>
 
     <div style={card}>
       <h3>Investor Risk Summary</h3>

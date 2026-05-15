@@ -607,7 +607,7 @@ export default function Landing() {
                   <div style={{ ...muted, marginTop: 12, lineHeight: 1.7 }}>{section.text}</div>
                 </div>
               ))}
-            </div>f
+            </div> 
           </section>
 
           <section id="sample" style={{ padding: "28px 0" }}>
