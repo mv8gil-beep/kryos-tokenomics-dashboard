@@ -24,7 +24,7 @@ export default function Landing() {
     const savedId = localStorage.getItem("kryos_report_id");
     if (!savedId) return;
 
-    fetch(`https://web-production-801ec.up.railway.app/reports/${savedId}`)
+    fetch(`https://web-production-db56c2.up.railway.app/reports/${savedId}`)
       .then((res) => res.json())
       .then((data) => setIsPaid(data.paid))
       .catch(console.error);
@@ -139,7 +139,7 @@ export default function Landing() {
     };
 
     try {
-      const res = await fetch("https://web-production-801ec.up.railway.app/analyze-launch", {
+      const res = await fetch("https://web-production-db56c2.up.railway.app/analyze-launch", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

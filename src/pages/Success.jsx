@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-const API = "https://web-production-801ec.up.railway.app";
+const API = "https://web-production-db56c2.up.railway.app";
 
 export default function Success() {
   useEffect(() => {

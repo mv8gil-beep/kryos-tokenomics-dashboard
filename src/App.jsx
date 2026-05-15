@@ -9,7 +9,7 @@ import {
   CartesianGrid,
 } from "recharts";
 
-const API = "https://web-production-801ec.up.railway.app";
+const API = "https://web-production-db56c2.up.railway.app";
 
 function formatMoney(value) {
   if (value >= 1_000_000_000) {
