@@ -778,6 +778,18 @@ export default function Landing() {
               </div>
             </div>
           </section>
+          <footer
+  style={{
+    marginTop: 50,
+    padding: "28px 0",
+    borderTop: "1px solid rgba(255,255,255,0.08)",
+    textAlign: "center",
+    color: "#94a3b8",
+    fontSize: 14,
+  }}
+>
+  Questions or support? Contact support@kryos.io
+</footer>
         </div>
       </div>
   );

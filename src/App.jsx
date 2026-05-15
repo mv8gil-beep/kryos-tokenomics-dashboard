@@ -1363,6 +1363,18 @@ return (
           and FDV compared to real market demand.
              </p>
        </div>
+       <div
+  style={{
+    marginTop: 40,
+    paddingTop: 20,
+    borderTop: "1px solid rgba(255,255,255,0.08)",
+    textAlign: "center",
+    color: "#94a3b8",
+    fontSize: 14,
+  }}
+>
+  Questions or support? Contact support@kryos.io
+     </div>
     </div>
 )}
 </>
