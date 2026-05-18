@@ -788,7 +788,7 @@ export default function Landing() {
     fontSize: 14,
   }}
 >
-  Questions or support? Contact support@kryos.io
+  Questions or support? Contact kryosanalytics@gmail.com
 </footer>
         </div>
       </div>
