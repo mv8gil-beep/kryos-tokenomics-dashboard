@@ -115,11 +115,36 @@ export default function Landing() {
       text: "Visualize likely sell pressure across M1, M3, M6, and M12 before buying.",
     },
   ];
-  async function analyzeLaunch() {
-    setLaunchLoading(true);
-    setLaunchResult(null);
+      async function analyzeLaunch() {
+        setLaunchResult(null);
+ if (!launchForm.total_supply?.trim()) {
+  setLaunchResult(null);
+  alert("Total Supply is required.");
+  return;
+}
 
-    const payload = {
+if (!launchForm.circulating_supply?.trim()) {
+  setLaunchResult(null);
+  alert("Circulating Supply is required.");
+  return;
+}
+
+if (!launchForm.fdv?.trim()) {
+  setLaunchResult(null);
+  alert("FDV is required.");
+  return;
+}
+
+if (!launchForm.liquidity?.trim()) {
+  setLaunchResult(null);
+  alert("Liquidity is required.");
+  return;
+}
+
+  setLaunchLoading(true);
+  
+
+  const payload = {
       total_supply: Number(launchForm.total_supply),
       circulating_supply: Number(launchForm.circulating_supply),
       fdv: Number(launchForm.fdv),
@@ -420,7 +445,7 @@ export default function Landing() {
                         onChange={(e) =>
                           setLaunchForm({
                             ...launchForm,
-                            [key]: e.target.value,
+                            [key]: e.target.value === "" ? "" : e.target.value,
                           })
                         }
                         style={{
@@ -435,21 +460,34 @@ export default function Landing() {
                   </div>
 
                   <button
-                    onClick={analyzeLaunch}
-                    disabled={launchLoading}
-                    style={{
-                      marginTop: 16,
-                      padding: "12px 18px",
-                      borderRadius: 10,
-                      background: "#22c55e",
-                      border: "none",
-                      color: "white",
-                      fontWeight: 600,
-                      cursor: "pointer",
-                    }}
-                  >
-                    {launchLoading ? "Analyzing..." : "Analyze Launch"}
-                  </button>
+  onClick={analyzeLaunch}
+  disabled={
+    launchLoading ||
+    !String(launchForm.total_supply || "").trim() ||
+    !String(launchForm.circulating_supply || "").trim() ||
+    !String(launchForm.fdv || "").trim() ||
+    !String(launchForm.liquidity || "").trim()
+  }
+  style={{
+    marginTop: 18,
+    padding: "14px 22px",
+    borderRadius: 12,
+    border: "none",
+    background:
+      launchLoading ||
+      !String(launchForm.total_supply || "").trim() ||
+      !String(launchForm.circulating_supply || "").trim() ||
+      !String(launchForm.fdv || "").trim() ||
+      !String(launchForm.liquidity || "").trim()
+        ? "#64748b"
+        : "#22c55e",
+    color: "white",
+    fontWeight: 700,
+    cursor: "pointer",
+  }}
+>
+  {launchLoading ? "Analyzing..." : "Analyze Launch"}
+</button>
 
                   {launchResult && (
                     <div
