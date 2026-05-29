@@ -164,7 +164,7 @@ if (!launchForm.liquidity?.trim()) {
     };
 
     try {
-      const res = await fetch("https://web-production-db56c2.up.railway.app/analyze-launch", {
+      const res = await fetch("http://127.0.0.1:8000/analyze-launch", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -467,6 +467,7 @@ if (!launchForm.liquidity?.trim()) {
     !String(launchForm.circulating_supply || "").trim() ||
     !String(launchForm.fdv || "").trim() ||
     !String(launchForm.liquidity || "").trim()
+    
   }
   style={{
     marginTop: 18,
@@ -479,6 +480,7 @@ if (!launchForm.liquidity?.trim()) {
       !String(launchForm.circulating_supply || "").trim() ||
       !String(launchForm.fdv || "").trim() ||
       !String(launchForm.liquidity || "").trim()
+      
         ? "#64748b"
         : "#22c55e",
     color: "white",
@@ -510,6 +512,47 @@ if (!launchForm.liquidity?.trim()) {
                       <p style={{ color: "rgba(255,255,255,0.72)" }}>
                         {launchResult.summary}
                       </p>
+                        {launchResult.investor_summary && (
+  <div style={{ marginTop: 16 }}>
+    <strong>Investor Summary</strong>
+    <p style={{ color: "rgba(255,255,255,0.82)", lineHeight: 1.7 }}>
+      {launchResult.investor_summary}
+    </p>
+  </div>
+)}
+
+{launchResult.would_invest && (
+  <div style={{ marginTop: 16 }}>
+    <strong>Would I Invest?</strong>
+    <p style={{ color: "#f59e0b", fontWeight: 600 }}>
+      {launchResult.would_invest}
+    </p>
+  </div>
+)}
+
+{launchResult.strengths?.length > 0 && (
+  <div style={{ marginTop: 16 }}>
+    <strong>Strengths</strong>
+    <ul>
+      {launchResult.strengths.map((item, index) => (
+        <li key={index}>{item}</li>
+      ))}
+    </ul>
+  </div>
+)}
+
+{launchResult.weaknesses?.length > 0 && (
+  <div style={{ marginTop: 16 }}>
+    <strong>Weaknesses</strong>
+    <ul>
+      {launchResult.weaknesses.map((item, index) => (
+        <li key={index}>{item}</li>
+      ))}
+    </ul>
+  </div>
+)}
+                      
+
 
                       <div style={{ marginTop: 16 }}>
                         <strong>Metrics</strong>
