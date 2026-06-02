@@ -551,6 +551,49 @@ if (!launchForm.liquidity?.trim()) {
     </ul>
   </div>
 )}
+
+{launchResult.dilution_forecast && (
+  <div style={{ marginTop: 16 }}>
+    <strong>Dilution Forecast</strong>
+
+    <ul>
+      <li>
+        Current Circulating:{" "}
+        {Number(launchResult.dilution_forecast.current_circulating).toLocaleString()}
+      </li>
+      <li>
+        Fully Diluted Supply:{" "}
+        {Number(launchResult.dilution_forecast.fully_diluted_supply).toLocaleString()}
+      </li>
+      <li>
+        Remaining Unlocks:{" "}
+        {Number(launchResult.dilution_forecast.remaining_supply).toLocaleString()}
+      </li>
+      <li>
+        Potential Future Dilution:{" "}
+        {launchResult.dilution_forecast.dilution_pct}%
+      </li>
+      <li>
+        Dilution Risk:{" "}
+        <strong>{launchResult.dilution_forecast.risk}</strong>
+      </li>
+    </ul>
+  </div>
+)}
+
+{launchResult.unlock_timeline?.length > 0 && (
+  <div style={{ marginTop: 16 }}>
+    <strong>Unlock Timeline</strong>
+
+    <ul>
+      {launchResult.unlock_timeline.map((item, index) => (
+        <li key={index}>
+          Month {item.month}: {item.event} — {item.unlock_pct}% unlock
+        </li>
+      ))}
+    </ul>
+  </div>
+)}
                       
 
 
