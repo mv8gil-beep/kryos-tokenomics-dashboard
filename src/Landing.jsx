@@ -518,6 +518,9 @@ if (!launchForm.liquidity?.trim()) {
     <p style={{ color: "rgba(255,255,255,0.82)", lineHeight: 1.7 }}>
       {launchResult.investor_summary}
     </p>
+
+    
+ 
   </div>
 )}
 
@@ -603,7 +606,10 @@ if (!launchForm.liquidity?.trim()) {
                           <li>Circulating %: {launchResult.metrics?.circulating_pct}</li>
                           <li>FDV / Liquidity Ratio: {launchResult.metrics?.fdv_liquidity_ratio}</li>
                           <li>TGE %: {launchResult.metrics?.tge_pct}</li>
-                          <li>Liquidity: ${launchResult.metrics?.liquidity}</li>
+                          <li>
+                              Liquidity: $
+                             {Number(launchResult.metrics?.liquidity || 0).toLocaleString()}
+                          </li>
                         </ul>
                       </div>
 
@@ -629,9 +635,56 @@ if (!launchForm.liquidity?.trim()) {
                         </div>
                       )}
                     </div>
+                                        )}
+
+                      <div
+                        style={{
+                          marginTop: 24,
+                          padding: 24,
+                          borderRadius: 16,
+                          background: "linear-gradient(135deg,#1e293b,#0f172a)",
+                          border: "1px solid rgba(255,255,255,0.12)",
+                          textAlign: "center",
+                        }}
+                      >
+                        <div style={{ fontSize: 32, marginBottom: 10 }}>
+                          🔒
+                        </div>
+
+                        <h3 style={{ marginBottom: 10 }}>
+                          Unlock Professional Launch Analysis
+                        </h3>
+
+                        <p
+                          style={{
+                            color: "rgba(255,255,255,0.72)",
+                            maxWidth: 600,
+                            margin: "0 auto 18px",
+                            lineHeight: 1.7,
+                          }}
+                        >
+                          Get investor-grade launch intelligence including
+                          dilution analysis, unlock pressure modeling,
+                          investor recommendations, and full risk breakdown.
+                        </p>
+
+                        <button
+                          style={{
+                            padding: "14px 28px",
+                            borderRadius: 12,
+                            border: "none",
+                            background: "#22c55e",
+                            color: "white",
+                            fontWeight: 700,
+                            cursor: "pointer",
+                          }}
+                        >
+                          Unlock Full Report – $29
+                        </button>
+                      </div>
+
+                    </div>
                   )}
-                </div>
-              )}
 
              <div
                      style={{
