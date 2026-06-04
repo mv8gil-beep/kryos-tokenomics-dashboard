@@ -512,7 +512,8 @@ if (!launchForm.liquidity?.trim()) {
                       <p style={{ color: "rgba(255,255,255,0.72)" }}>
                         {launchResult.summary}
                       </p>
-                        {launchResult.investor_summary && (
+                      
+                        {isPaid && launchResult.investor_summary && (
   <div style={{ marginTop: 16 }}>
     <strong>Investor Summary</strong>
     <p style={{ color: "rgba(255,255,255,0.82)", lineHeight: 1.7 }}>
@@ -524,7 +525,7 @@ if (!launchForm.liquidity?.trim()) {
   </div>
 )}
 
-{launchResult.would_invest && (
+{isPaid && launchResult.would_invest && (
   <div style={{ marginTop: 16 }}>
     <strong>Would I Invest?</strong>
     <p style={{ color: "#f59e0b", fontWeight: 600 }}>
@@ -533,7 +534,8 @@ if (!launchForm.liquidity?.trim()) {
   </div>
 )}
 
-{launchResult.strengths?.length > 0 && (
+
+{isPaid && launchResult.strengths?.length > 0 && (
   <div style={{ marginTop: 16 }}>
     <strong>Strengths</strong>
     <ul>
@@ -544,7 +546,7 @@ if (!launchForm.liquidity?.trim()) {
   </div>
 )}
 
-{launchResult.weaknesses?.length > 0 && (
+{isPaid && launchResult.weaknesses?.length > 0 && (
   <div style={{ marginTop: 16 }}>
     <strong>Weaknesses</strong>
     <ul>
@@ -555,7 +557,7 @@ if (!launchForm.liquidity?.trim()) {
   </div>
 )}
 
-{launchResult.dilution_forecast && (
+{isPaid && launchResult.dilution_forecast && (
   <div style={{ marginTop: 16 }}>
     <strong>Dilution Forecast</strong>
 
@@ -584,7 +586,7 @@ if (!launchForm.liquidity?.trim()) {
   </div>
 )}
 
-{launchResult.unlock_timeline?.length > 0 && (
+{isPaid && launchResult.unlock_timeline?.length > 0 && (
   <div style={{ marginTop: 16 }}>
     <strong>Unlock Timeline</strong>
 
