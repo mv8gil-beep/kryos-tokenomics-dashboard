@@ -671,6 +671,35 @@ if (!launchForm.liquidity?.trim()) {
                         </p>
 
                         <button
+
+                        onClick={async () => {
+  const reportRes = await fetch("https://web-production-db56c2.up.railway.app/reports/create", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      email: "",
+      token: localStorage.getItem("kryos_token") || "",
+      chain: localStorage.getItem("kryos_chain") || "solana",
+    }),
+  });
+
+  const reportData = await reportRes.json();
+  localStorage.setItem("kryos_report_id", reportData.report_id);
+
+  const checkoutRes = await fetch("https://web-production-db56c2.up.railway.app/checkout", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      report_id: reportData.report_id,
+    }),
+  });
+
+  const checkoutData = await checkoutRes.json();
+
+  if (checkoutData.url) {
+    window.location.href = checkoutData.url;
+  }
+}}
                           style={{
                             padding: "14px 28px",
                             borderRadius: 12,
@@ -680,6 +709,8 @@ if (!launchForm.liquidity?.trim()) {
                             fontWeight: 700,
                             cursor: "pointer",
                           }}
+                          
+
                         >
                           Unlock Full Report – $29
                         </button>
