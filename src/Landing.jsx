@@ -164,7 +164,7 @@ if (!launchForm.liquidity?.trim()) {
     };
 
     try {
-      const res = await fetch("http://127.0.0.1:8000/analyze-launch", {
+      const res = await fetch("https://web-production-db56c2.up.railway.app/analyze-launch", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
