@@ -118,7 +118,7 @@ export default function TokenomicsPage() {
             fontWeight: 600,
           }}
         >
-          Run a Kryos Risk Report ($29)
+          Run a Kryos Risk Report ($9.99)
         </a>
       </div>
     </div>

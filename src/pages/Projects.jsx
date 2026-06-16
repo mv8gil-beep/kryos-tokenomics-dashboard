@@ -34,7 +34,7 @@ export default function Projects() {
   }
 
   async function generateReport(projectId) {
-    alert("Premium report – $29. Payment required soon.");
+    alert("Premium report – $9.99. Payment required soon.");
     const res = await fetch(`${API}/v1/reports`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -143,7 +143,7 @@ export default function Projects() {
             <p style={{ margin: "8px 0" }}>TGE Unlock: {project.tge_unlock}%</p>
 
             <button onClick={() => generateReport(project.id)}>
-              Pay $29 → Generate Report
+              Pay $9.99 → Generate Report
             </button>
           </div>
         ))}

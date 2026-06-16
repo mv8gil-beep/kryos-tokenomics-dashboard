@@ -250,7 +250,7 @@ return fetch(`${API}/analyze-token`, {
           }
         }}
       >
-        Continue to Checkout — $29
+        Continue to Checkout — $9.99
       </button>
     </div>
   );

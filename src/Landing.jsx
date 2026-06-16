@@ -712,7 +712,7 @@ if (!launchForm.liquidity?.trim()) {
                           
 
                         >
-                          Unlock Full Report – $29
+                          Unlock Full Report – $9.99
                         </button>
                       </div>
 
@@ -909,7 +909,7 @@ if (!launchForm.liquidity?.trim()) {
                 >
                   <h3>Pro Report</h3>
                   <p style={{ opacity: 0.7 }}>Full risk analysis</p>
-                  <p style={{ fontSize: 28, marginTop: 10 }}>$29</p>
+                  <p style={{ fontSize: 28, marginTop: 10 }}>$9.99</p>
                 </div>
               </div>
             </div>
@@ -967,7 +967,7 @@ if (!launchForm.liquidity?.trim()) {
                   href={isPaid ? `/app?report_id=${localStorage.getItem("kryos_report_id")}` : "/app"}
                   style={buttonPrimary}
                 >
-                  {isPaid ? "View Full Report" : "Unlock Full Risk Analysis – $29"}
+                  {isPaid ? "View Full Report" : "Unlock Full Risk Analysis – $9.99"}
                 </a>
 
                 {isPaid && (
@@ -976,9 +976,9 @@ if (!launchForm.liquidity?.trim()) {
                   </div>
                 )}
 
-                <a href="#sample" style={buttonSecondary}>
-                  See Example Report
-                </a>
+               <a href="/reports/example-token" style={buttonSecondary}>
+                    See Example Report
+               </a>
 
                 <div style={{ marginTop: 12 }}>
                   <a href="/reports/example-token" style={{ color: "#93c5fd" }}>

@@ -138,7 +138,7 @@ export default function ExampleReportPage() {
             fontWeight: 600,
           }}
         >
-          Get a Full Kryos Risk Report ($29)
+          Get a Full Kryos Risk Report ($9.99)
         </a>
       </div>
     </div>
