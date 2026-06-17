@@ -673,6 +673,7 @@ if (!launchForm.liquidity?.trim()) {
                         <button
 
                         onClick={async () => {
+                          localStorage.setItem("kryos_report_mode", "launch");
   const reportRes = await fetch("https://web-production-db56c2.up.railway.app/reports/create", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -690,8 +691,9 @@ if (!launchForm.liquidity?.trim()) {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      report_id: reportData.report_id,
-    }),
+  report_id: reportData.report_id,
+  mode: "launch",
+}),
   });
 
   const checkoutData = await checkoutRes.json();

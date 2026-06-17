@@ -16,7 +16,13 @@ export default function Success() {
       method: "POST",
     })
       .then(() => {
-        window.location.href = `/app?report_id=${reportId}`;
+        const mode = localStorage.getItem("kryos_report_mode");
+
+if (mode === "launch") {
+  window.location.href = `/?mode=launch&paid=true&report_id=${reportId}`;
+} else {
+  window.location.href = `/app?report_id=${reportId}`;
+}
       })
       .catch((err) => {
         console.error("mark paid error:", err);
