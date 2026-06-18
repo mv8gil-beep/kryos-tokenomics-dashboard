@@ -29,6 +29,25 @@ export default function Landing() {
       .then((data) => setIsPaid(data.paid))
       .catch(console.error);
   }, []);
+  useEffect(() => {
+  const params = new URLSearchParams(window.location.search);
+  const urlMode = params.get("mode");
+  const paid = params.get("paid");
+  const savedLaunchReport = localStorage.getItem("kryos_launch_report");
+
+  if (urlMode === "launch" && savedLaunchReport) {
+    const parsed = JSON.parse(savedLaunchReport);
+
+    setMode("launch");
+    setLaunchForm(parsed.input || {});
+    setLaunchResult(parsed.result || null);
+
+    if (paid === "true") {
+      setIsPaid(true);
+      localStorage.setItem("kryos_paid", "true");
+    }
+  }
+}, []);
 
   const page = {
   minHeight: "100vh",
