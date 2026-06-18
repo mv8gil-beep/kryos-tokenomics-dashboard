@@ -626,7 +626,7 @@ if (!launchForm.liquidity?.trim()) {
                         </div>
                       )}
 
-                      {launchResult.recommendations?.length > 0 && (
+                      {isPaid && launchResult.recommendations?.length > 0 && (
                         <div style={{ marginTop: 16 }}>
                           <strong>Recommendations</strong>
                           <ul>
@@ -637,7 +637,9 @@ if (!launchForm.liquidity?.trim()) {
                         </div>
                       )}
                     </div>
-                                        )}
+                                        
+
+                  {!isPaid && (                 
 
                       <div
                         style={{
@@ -652,6 +654,7 @@ if (!launchForm.liquidity?.trim()) {
                         <div style={{ fontSize: 32, marginBottom: 10 }}>
                           🔒
                         </div>
+                        
 
                         <h3 style={{ marginBottom: 10 }}>
                           Unlock Professional Launch Analysis
@@ -724,6 +727,7 @@ if (!launchForm.liquidity?.trim()) {
                           Unlock Full Report – $9.99
                         </button>
                       </div>
+                      )}
 
                     </div>
                   )}
