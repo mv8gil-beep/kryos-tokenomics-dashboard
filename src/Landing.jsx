@@ -979,7 +979,13 @@ if (!launchForm.liquidity?.trim()) {
                 </p>
 
                 <a
-                  href={isPaid ? `/app?report_id=${localStorage.getItem("kryos_report_id")}` : "/app"}
+                  href={
+                  isPaid && localStorage.getItem("kryos_report_mode") === "launch"
+                  ? `/?mode=launch&paid=true&report_id=${localStorage.getItem("kryos_report_id")}`
+                 : isPaid
+                  ? `/app?report_id=${localStorage.getItem("kryos_report_id")}`
+                 : "/app"
+                }
                   style={buttonPrimary}
                 >
                   {isPaid ? "View Full Report" : "Unlock Full Risk Analysis – $9.99"}
