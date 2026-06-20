@@ -533,6 +533,29 @@ if (!launchForm.liquidity?.trim()) {
                       <p style={{ color: "rgba(255,255,255,0.72)" }}>
                         {launchResult.summary}
                       </p>
+                      {isPaid && (
+  <div
+    style={{
+      marginTop: 20,
+      padding: 18,
+      borderRadius: 16,
+      background: "linear-gradient(135deg, rgba(34,197,94,0.16), rgba(14,165,233,0.10))",
+      border: "1px solid rgba(34,197,94,0.28)",
+    }}
+  >
+    <div style={{ fontSize: 14, color: "#86efac", fontWeight: 700 }}>
+      🔓 PREMIUM LAUNCH REPORT
+    </div>
+
+    <h3 style={{ fontSize: 28, margin: "8px 0" }}>
+      Kryos Launch Score: {launchResult.score} / 100
+    </h3>
+
+    <p style={{ color: "rgba(255,255,255,0.78)", margin: 0 }}>
+      Generated: {new Date().toLocaleDateString()} · Full investor analysis unlocked
+    </p>
+  </div>
+)}
                       
                         {isPaid && launchResult.investor_summary && (
   <div style={{ marginTop: 16 }}>
