@@ -231,23 +231,32 @@ return fetch(`${API}/analyze-token`, {
             }),
           });
 
-          const reportData = await reportRes.json();
-          localStorage.setItem("kryos_report_id", reportData.report_id);
+        const reportData = await reportRes.json();
+localStorage.setItem("kryos_report_id", reportData.report_id);
 
-          const checkoutRes = await fetch(`${API}/checkout`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              report_id: reportData.report_id,
-              mode: reportMode,
-            }),
-          });
+const STRIPE_MODE =
+  import.meta.env.VITE_STRIPE_MODE || "development";
 
-          const checkoutData = await checkoutRes.json();
+if (STRIPE_MODE === "development") {
+  localStorage.setItem("kryos_paid", "true");
+  window.location.href = `/app?mode=${reportMode}`;
+  return;
+}
 
-          if (checkoutData.url) {
-            window.location.href = checkoutData.url;
-          }
+const checkoutRes = await fetch(`${API}/checkout`, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    report_id: reportData.report_id,
+    mode: reportMode,
+  }),
+});
+
+const checkoutData = await checkoutRes.json();
+
+if (checkoutData.url) {
+  window.location.href = checkoutData.url;
+}
         }}
       >
         Continue to Checkout — $9.99
@@ -488,33 +497,7 @@ return (
         marginTop: 30,
       }}
     >
-      <div
-  style={{
-    ...card,
-    background: "rgba(15,23,42,0.85)",
-    border: "1px solid rgba(103,232,249,0.12)",
-    boxShadow: "0 8px 24px rgba(0,0,0,0.22)",
-  }}
->
       
-        <div style={{ color: "#94a3b8", marginBottom: 10 }}>
-              Launch Score
-        </div>
-
-        <div
-          style={{
-            fontSize: 64,
-            fontWeight: 800,
-            lineHeight: 1,
-          }}
-        >
-          {savedLaunchReport.result.score}
-        </div>
-
-        <div style={{ marginTop: 10, color: "#cbd5e1" }}>
-          / 100 Stability Rating
-        </div>
-      </div>
 
       <div
     style={{

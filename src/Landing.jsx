@@ -261,12 +261,12 @@ if (!launchForm.liquidity?.trim()) {
                 </button>
               </div>
 
-              <div style={{ color: "yellow", marginTop: 10 }}>
-                Current mode: {mode}
-              </div>
+             
 
               <h1 style={{ fontSize: isMobile ? 38 : 58, lineHeight: 1.05, margin: "18px 0 20px" }}>
-                Analyze token launch risk before you buy.
+                {mode === "launch"
+                        ? "Analyze your token launch before you launch."
+                        : "Analyze token launch risk before you buy."}
               </h1>
 
               <p
@@ -278,8 +278,9 @@ if (!launchForm.liquidity?.trim()) {
                   width: "100%",
                 }}
               >
-                Kryos helps crypto investors quantify launch risk using structured tokenomics
-                signals, unlock pressure modeling, and transparent scoring.
+                {mode === "launch"
+                 ? "Kryos helps founders and investors evaluate token launches using structured tokenomics analysis, liquidity modeling, unlock pressure forecasts, and transparent risk scoring."
+                 : "Kryos helps crypto investors quantify launch risk using structured tokenomics signals, unlock pressure modeling, and transparent scoring."}
               </p>
 
               <div style={{ marginTop: 28 }}>
@@ -291,7 +292,7 @@ if (!launchForm.liquidity?.trim()) {
                   }
                   style={buttonPrimary}
                 >
-                  Analyze Token 
+                  {mode === "launch" ? "Open Launch Analyzer" : "Analyze Token"} 
                 </a>
               </div>
 
@@ -534,39 +535,102 @@ if (!launchForm.liquidity?.trim()) {
                         {launchResult.summary}
                       </p>
                       {isPaid && (
+ <div
+  style={{
+    marginTop: 24,
+    padding: 24,
+    borderRadius: 18,
+    background:
+      "linear-gradient(135deg, rgba(15,23,42,0.96), rgba(30,41,59,0.96))",
+    border: "1px solid rgba(103,232,249,0.22)",
+    boxShadow: "0 12px 34px rgba(0,0,0,0.28)",
+  }}
+>
   <div
     style={{
-      marginTop: 20,
-      padding: 18,
-      borderRadius: 16,
-      background: "linear-gradient(135deg, rgba(34,197,94,0.16), rgba(14,165,233,0.10))",
-      border: "1px solid rgba(34,197,94,0.28)",
+      fontSize: 13,
+      letterSpacing: 1.4,
+      textTransform: "uppercase",
+      color: "#67e8f9",
+      fontWeight: 800,
+      marginBottom: 10,
     }}
   >
-    <div style={{ fontSize: 14, color: "#86efac", fontWeight: 700 }}>
-      🔓 PREMIUM LAUNCH REPORT
+    🔓 Premium Launch Report
+  </div>
+
+  <h2 style={{ fontSize: 30, margin: "0 0 8px", letterSpacing: -0.5 }}>
+    Kryos Token Launch Analysis
+  </h2>
+
+  <p
+    style={{
+      color: "rgba(255,255,255,0.72)",
+      margin: "0 0 22px",
+      lineHeight: 1.6,
+    }}
+  >
+    Professional token launch risk assessment based on liquidity depth,
+    dilution pressure, unlock schedules, and launch stability.
+  </p>
+
+  <div
+    style={{
+      display: "grid",
+      gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
+      gap: 14,
+      marginTop: 18,
+    }}
+  >
+    <div
+      style={{
+        padding: 16,
+        borderRadius: 14,
+        background: "rgba(255,255,255,0.05)",
+        border: "1px solid rgba(255,255,255,0.08)",
+      }}
+    >
+      <div style={{ color: "#94a3b8", fontSize: 13, marginBottom: 6 }}>
+        Launch Score
+      </div>
+      <div style={{ fontSize: 30, fontWeight: 800 }}>
+        {launchResult.score} / 100
+      </div>
     </div>
 
-    <h3 style={{ fontSize: 28, margin: "8px 0" }}>
-      Kryos Launch Score: {launchResult.score} / 100
-    </h3>
+    <div
+      style={{
+        padding: 16,
+        borderRadius: 14,
+        background: "rgba(255,255,255,0.05)",
+        border: "1px solid rgba(255,255,255,0.08)",
+      }}
+    >
+      <div style={{ color: "#94a3b8", fontSize: 13, marginBottom: 6 }}>
+        Risk Level
+      </div>
+      <div style={{ fontSize: 30, fontWeight: 800 }}>
+        {launchResult.risk}
+      </div>
+    </div>
 
-    <p style={{ color: "rgba(255,255,255,0.78)", margin: 0 }}>
-      Generated: {new Date().toLocaleDateString()} · Full investor analysis unlocked
-    </p>
+    <div
+      style={{
+        padding: 16,
+        borderRadius: 14,
+        background: "rgba(255,255,255,0.05)",
+        border: "1px solid rgba(255,255,255,0.08)",
+      }}
+    >
+      <div style={{ color: "#94a3b8", fontSize: 13, marginBottom: 6 }}>
+        Generated
+      </div>
+      <div style={{ fontSize: 18, fontWeight: 700 }}>
+        {new Date().toLocaleDateString()}
+      </div>
+    </div>
   </div>
-)}
-                      
-                        {isPaid && launchResult.investor_summary && (
-  <div style={{ marginTop: 16 }}>
-    <strong>Investor Summary</strong>
-    <p style={{ color: "rgba(255,255,255,0.82)", lineHeight: 1.7 }}>
-      {launchResult.investor_summary}
-    </p>
-
-    
- 
-  </div>
+</div>
 )}
 
 {isPaid && launchResult.would_invest && (
@@ -729,7 +793,8 @@ if (!launchForm.liquidity?.trim()) {
     result: launchResult,
   })
 );
-  const reportRes = await fetch("https://web-production-db56c2.up.railway.app/reports/create", {
+  const API = import.meta.env.VITE_API_URL;
+  const reportRes = await fetch(`${API}/reports/create`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -741,8 +806,16 @@ if (!launchForm.liquidity?.trim()) {
 
   const reportData = await reportRes.json();
   localStorage.setItem("kryos_report_id", reportData.report_id);
+  const STRIPE_MODE =
+  import.meta.env.VITE_STRIPE_MODE || "development";
 
-  const checkoutRes = await fetch("https://web-production-db56c2.up.railway.app/checkout", {
+if (STRIPE_MODE === "development") {
+  localStorage.setItem("kryos_paid", "true");
+  window.location.href = "/app?mode=launch";
+  return;
+}
+
+  const checkoutRes = await fetch(`${API}/checkout`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -1009,7 +1082,9 @@ if (!launchForm.liquidity?.trim()) {
               }}
             >
               <h2 style={{ fontSize: 42, marginBottom: 12 }}>
-                Use Kryos before you buy the launch.
+                {mode === "launch"
+                  ? "Analyze liquidity, dilution, unlock schedules, and launch stability before your token goes live."
+                  : "Start with a tokenomics risk report, then expand into a repeatable launch diligence workflow."}
               </h2>
 
               <p style={{ ...muted, fontSize: 18, lineHeight: 1.7, maxWidth: 760 }}>
