@@ -234,8 +234,7 @@ return fetch(`${API}/analyze-token`, {
         const reportData = await reportRes.json();
 localStorage.setItem("kryos_report_id", reportData.report_id);
 
-const STRIPE_MODE =
-  import.meta.env.VITE_STRIPE_MODE || "development";
+const STRIPE_MODE = import.meta.env.VITE_STRIPE_MODE;
 
 if (STRIPE_MODE === "development") {
   localStorage.setItem("kryos_paid", "true");
