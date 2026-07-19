@@ -138,25 +138,25 @@ export default function Landing() {
   ];
       async function analyzeLaunch() {
         setLaunchResult(null);
- if (!launchForm.total_supply?.trim()) {
+ if (!String(launchForm.total_supply || "").trim()) {
   setLaunchResult(null);
   alert("Total Supply is required.");
   return;
 }
 
-if (!launchForm.circulating_supply?.trim()) {
+if (!String(launchForm.circulating_supply || "").trim()) {
   setLaunchResult(null);
   alert("Circulating Supply is required.");
   return;
 }
 
-if (!launchForm.fdv?.trim()) {
+if (!String(launchForm.fdv || "").trim()) {
   setLaunchResult(null);
   alert("FDV is required.");
   return;
 }
 
-if (!launchForm.liquidity?.trim()) {
+if (!String(launchForm.liquidity || "").trim()) {
   setLaunchResult(null);
   alert("Liquidity is required.");
   return;
