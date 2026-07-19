@@ -209,6 +209,7 @@ return fetch(`${API}/analyze-token`, {
 </p>
 
       <button
+        type="button"
         style={{
           background: "#22c55e",
           color: "white",
