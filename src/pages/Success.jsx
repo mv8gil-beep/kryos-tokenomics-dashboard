@@ -19,7 +19,7 @@ export default function Success() {
         const mode = localStorage.getItem("kryos_report_mode");
 
 if (mode === "launch") {
-  window.location.href = `/?mode=launch&paid=true&report_id=${reportId}`;
+  window.location.href = `/app?mode=launch&paid=true&report_id=${reportId}`;
 } else {
   window.location.href = `/app?report_id=${reportId}`;
 }
