@@ -16,7 +16,16 @@ export default function Success() {
       method: "POST",
     })
       .then(() => {
-        const mode = localStorage.getItem("kryos_report_mode");
+  // Track successful $9.99 Kryos purchase
+  if (window.gtag) {
+    window.gtag("event", "purchase", {
+      transaction_id: reportId,
+      value: 9.99,
+      currency: "USD",
+    });
+  }
+
+  const mode = localStorage.getItem("kryos_report_mode");
 
 if (mode === "launch") {
   window.location.href = `/app?mode=launch&paid=true&report_id=${reportId}`;

@@ -237,7 +237,7 @@ localStorage.setItem("kryos_report_id", reportData.report_id);
 
 const STRIPE_MODE = import.meta.env.VITE_STRIPE_MODE;
 
-alert("LIVE STRIPE MODE = " + STRIPE_MODE);
+
 
 if (STRIPE_MODE === "development") {
   localStorage.setItem("kryos_paid", "true");
