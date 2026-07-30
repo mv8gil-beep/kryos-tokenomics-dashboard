@@ -9,6 +9,8 @@ export default function Success() {
 
     if (!reportId) return;
 
+    
+
     localStorage.setItem("kryos_paid", "true");
     localStorage.setItem("kryos_report_id", reportId);
 
@@ -17,6 +19,9 @@ export default function Success() {
     })
       .then(() => {
   // Track successful $9.99 Kryos purchase
+  console.log("Success page loaded");
+  console.log("window.gtag =", window.gtag);
+
   if (window.gtag) {
     window.gtag("event", "purchase", {
       transaction_id: reportId,
@@ -25,13 +30,15 @@ export default function Success() {
     });
   }
 
-  const mode = localStorage.getItem("kryos_report_mode");
+ const mode = localStorage.getItem("kryos_report_mode");
 
-if (mode === "launch") {
-  window.location.href = `/app?mode=launch&paid=true&report_id=${reportId}`;
-} else {
-  window.location.href = `/app?report_id=${reportId}`;
-}
+setTimeout(() => {
+  if (mode === "launch") {
+    window.location.href = `/app?mode=launch&paid=true&report_id=${reportId}`;
+  } else {
+    window.location.href = `/app?report_id=${reportId}`;
+  }
+}, 1000);
       })
       .catch((err) => {
         console.error("mark paid error:", err);
